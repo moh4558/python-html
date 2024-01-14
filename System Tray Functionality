@@ -1,0 +1,26 @@
+from PyQt5.QtWidgets import QApplication, QSystemTrayIcon, QMenu, QAction
+
+app = QApplication([])
+app.setQuitOnLastWindowClosed(False)
+
+# Create the tray icon
+trayIcon = QSystemTrayIcon(QIcon("icon.png"), app)
+trayIcon.show()
+
+# Create the menu
+menu = QMenu()
+startAction = QAction("Start")
+stopAction = QAction("Stop")
+exitAction = QAction("Exit")
+menu.addAction(startAction)
+menu.addAction(stopAction)
+menu.addSeparator()
+menu.addAction(exitAction)
+
+# Connect actions
+startAction.triggered.connect(start_hand_tracking)
+stopAction.triggered.connect(stop_hand_tracking)
+exitAction.triggered.connect(app.quit)
+
+trayIcon.setContextMenu(menu)
+app.exec_()
