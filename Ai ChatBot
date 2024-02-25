@@ -1,0 +1,58 @@
+from chatterbot import ChatBot
+from chatterbot.trainers import ChatterBotCorpusTrainer
+import tkinter as tk
+from tkinter import messagebox
+
+class ChatBotApp:
+    def __init__(self):
+        self.chatbot = ChatBot('MyChatBot')
+        self.trainer = ChatterBotCorpusTrainer(self.chatbot)
+        self.trainer.train('chatterbot.corpus.english')
+
+        self.window = tk.Tk()
+        self.window.title("ChatBot")
+        self.window.geometry("400x500")
+
+        self.message_log = tk.Text(self.window)
+        self.message_log.pack(pady=10, padx=10)
+        self.message_log.config(state=tk.DISABLED)
+
+        self.input_field = tk.Entry(self.window)
+        self.input_field.pack(pady=10, padx=10)
+        self.input_field.bind("<Return>", self.send_message)
+
+        self.send_button = tk.Button(self.window, text="Send", command=self.send_message)
+        self.send_button.pack(pady=10)
+
+    def send_message(self, event=None):
+        user_input = self.input_field.get()
+        self.input_field.delete(0, tk.END)
+
+        response = self.chatbot.get_response(user_input)
+
+        self.update_chat_log(user_input, "You")
+        self.update_chat_log(response, "ChatBot")
+
+        if user_input.lower() == "bye":
+            messagebox.showinfo("Chat Ended", "Thank you for chatting! Goodbye.")
+            self.window.quit()
+
+    def update_chat_log(self, message, sender):
+        self.message_log.config(state=tk.NORMAL)
+        if sender == "You":
+            self.message_log.insert(tk.END, f"You: {message}\n")
+            self.message_log.tag_add("you", "end-2l","end-1l")
+            self.message_log.tag_config("you", foreground="blue")
+        else:
+            self.message_log.insert(tk.END, f"ChatBot: {message}\n")
+            self.message_log.tag_add("bot", "end-2l", "end-1l")
+            self.message_log.tag_config("bot", foreground="red")
+        self.message_log.config(state=tk.DISABLED)
+        self.message_log.see(tk.END)
+
+    def run(self):
+        self.window.mainloop()
+
+if __name__ == "__main__":
+    chatbot_app = ChatBotApp()
+    chatbot_app.run()
