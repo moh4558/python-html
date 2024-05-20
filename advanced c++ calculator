@@ -1,0 +1,288 @@
+#include <iostream>
+#include <cmath>
+#include <limits>
+#include <vector>
+#include <string>
+
+using namespace std;
+
+// Function to add two integers
+int add(int a, int b) {
+    return a + b;
+}
+
+// Function to subtract two integers
+int subtract(int a, int b) {
+    return a - b;
+}
+
+// Function to multiply two integers
+int multiply(int a, int b) {
+    return a * b;
+}
+
+// Function to divide two integers, returning a double
+double divide(int a, int b) {
+    if (b != 0) {
+        return static_cast<double>(a) / b;
+    } else {
+        cout << "Error: Division by zero!" << endl;
+        return numeric_limits<double>::quiet_NaN(); // Return NaN to indicate error
+    }
+}
+
+// Function to compute power, handling negative exponents
+double power(int base, int exponent) {
+    if (exponent == 0) {
+        return 1;
+    } else if (exponent > 0) {
+        int result = 1;
+        for (int i = 0; i < exponent; ++i) {
+            result *= base;
+        }
+        return result;
+    } else { // exponent < 0
+        double result = 1.0;
+        for (int i = 0; i < -exponent; ++i) {
+            result /= base;
+        }
+        return result;
+    }
+}
+
+// Function to compute modulus
+int modulusOp(int a, int b) {
+    if (b != 0) {
+        return a % b;
+    } else {
+        cout << "Error: Division by zero in modulus operation!" << endl;
+        return 0;
+    }
+}
+
+// Function to compute square root
+double square_root(int a) {
+    if (a >= 0) {
+        return sqrt(a);
+    } else {
+        cout << "Error: Square root of negative number!" << endl;
+        return numeric_limits<double>::quiet_NaN(); // Return NaN to indicate error
+    }
+}
+
+// Function to compute logarithm base 10
+double logarithm(int a) {
+    if (a > 0) {
+        return log10(a);
+    } else {
+        cout << "Error: Logarithm of non-positive number!" << endl;
+        return numeric_limits<double>::quiet_NaN(); // Return NaN to indicate error
+    }
+}
+
+// Function to compute factorial
+unsigned long long factorial(int n) {
+    if (n < 0) {
+        cout << "Error: Factorial of negative number!" << endl;
+        return numeric_limits<unsigned long long>::quiet_NaN();
+    }
+    unsigned long long result = 1;
+    for (int i = 1; i <= n; ++i) {
+        result *= i;
+    }
+    return result;
+}
+
+// Function to compute sine
+double sine(double angle) {
+    return sin(angle);
+}
+
+// Function to compute cosine
+double cosine(double angle) {
+    return cos(angle);
+}
+
+// Function to compute tangent
+double tangent(double angle) {
+    return tan(angle);
+}
+
+// Function to display the result of an operation
+void displayResult(const string &operation, double result) {
+    cout << operation << ": " << result << endl;
+}
+
+// Function to display a menu and get the user's choice
+int displayMenu() {
+    int choice;
+    cout << "\nChoose an operation:\n";
+    cout << "1. Add\n";
+    cout << "2. Subtract\n";
+    cout << "3. Multiply\n";
+    cout << "4. Divide\n";
+    cout << "5. Power\n";
+    cout << "6. Modulus\n";
+    cout << "7. Square Root\n";
+    cout << "8. Logarithm (base 10)\n";
+    cout << "9. Factorial\n";
+    cout << "10. Sine\n";
+    cout << "11. Cosine\n";
+    cout << "12. Tangent\n";
+    cout << "13. Clear Screen\n";
+    cout << "14. Exit\n";
+    cout << "Enter your choice: ";
+    cin >> choice;
+    return choice;
+}
+
+// Function to get a valid number from the user
+int getValidNumber(const string &prompt) {
+    int number;
+    while (true) {
+        cout << prompt;
+        cin >> number;
+        if (!cin.fail()) {
+            break;
+        } else {
+            cout << "Invalid input. Please enter an integer.\n";
+            cin.clear();
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        }
+    }
+    return number;
+}
+
+// Function to get a valid double number from the user
+double getValidDouble(const string &prompt) {
+    double number;
+    while (true) {
+        cout << prompt;
+        cin >> number;
+        if (!cin.fail()) {
+            break;
+        } else {
+            cout << "Invalid input. Please enter a number.\n";
+            cin.clear();
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        }
+    }
+    return number;
+}
+
+// Function to clear the screen
+void clearScreen() {
+    cout << "\033[2J\033[1;1H"; // ANSI escape codes to clear the screen
+}
+
+int main() {
+    vector<string> history;
+    
+    while (true) {
+        int choice = displayMenu();
+        
+        if (choice == 14) {
+            cout << "Exiting the program." << endl;
+            break;
+        } else if (choice == 13) {
+            clearScreen();
+            continue;
+        }
+        
+        int num1, num2;
+        double result;
+        unsigned long long factResult;
+        
+        switch (choice) {
+            case 1: // Add
+                num1 = getValidNumber("Enter the first number: ");
+                num2 = getValidNumber("Enter the second number: ");
+                result = add(num1, num2);
+                displayResult("Sum", result);
+                history.push_back("Add: " + to_string(num1) + " + " + to_string(num2) + " = " + to_string(result));
+                break;
+            case 2: // Subtract
+                num1 = getValidNumber("Enter the first number: ");
+                num2 = getValidNumber("Enter the second number: ");
+                result = subtract(num1, num2);
+                displayResult("Difference", result);
+                history.push_back("Subtract: " + to_string(num1) + " - " + to_string(num2) + " = " + to_string(result));
+                break;
+            case 3: // Multiply
+                num1 = getValidNumber("Enter the first number: ");
+                num2 = getValidNumber("Enter the second number: ");
+                result = multiply(num1, num2);
+                displayResult("Product", result);
+                history.push_back("Multiply: " + to_string(num1) + " * " + to_string(num2) + " = " + to_string(result));
+                break;
+            case 4: // Divide
+                num1 = getValidNumber("Enter the first number: ");
+                num2 = getValidNumber("Enter the second number: ");
+                result = divide(num1, num2);
+                displayResult("Quotient", result);
+                history.push_back("Divide: " + to_string(num1) + " / " + to_string(num2) + " = " + to_string(result));
+                break;
+            case 5: // Power
+                num1 = getValidNumber("Enter the base number: ");
+                num2 = getValidNumber("Enter the exponent: ");
+                result = power(num1, num2);
+                displayResult("Power", result);
+                history.push_back("Power: " + to_string(num1) + "^" + to_string(num2) + " = " + to_string(result));
+                break;
+            case 6: // Modulus
+                num1 = getValidNumber("Enter the first number: ");
+                num2 = getValidNumber("Enter the second number: ");
+                result = modulusOp(num1, num2);
+                displayResult("Modulus", result);
+                history.push_back("Modulus: " + to_string(num1) + " % " + to_string(num2) + " = " + to_string(result));
+                break;
+            case 7: // Square Root
+                num1 = getValidNumber("Enter the number: ");
+                result = square_root(num1);
+                displayResult("Square Root", result);
+                history.push_back("Square Root: sqrt(" + to_string(num1) + ") = " + to_string(result));
+                break;
+            case 8: // Logarithm (base 10)
+                num1 = getValidNumber("Enter the number: ");
+                result = logarithm(num1);
+                displayResult("Logarithm (base 10)", result);
+                history.push_back("Logarithm: log10(" + to_string(num1) + ") = " + to_string(result));
+                break;
+            case 9: // Factorial
+                num1 = getValidNumber("Enter the number: ");
+                factResult = factorial(num1);
+                cout << "Factorial: " << factResult << endl;
+                history.push_back("Factorial: " + to_string(num1) + "! = " + to_string(factResult));
+                break;
+            case 10: // Sine
+                result = getValidDouble("Enter the angle in radians: ");
+                result = sine(result);
+                displayResult("Sine", result);
+                history.push_back("Sine: sin(angle) = " + to_string(result));
+                break;
+            case 11: // Cosine
+                result = getValidDouble("Enter the angle in radians: ");
+                result = cosine(result);
+                displayResult("Cosine", result);
+                history.push_back("Cosine: cos(angle) = " + to_string(result));
+                break;
+            case 12: // Tangent
+                result = getValidDouble("Enter the angle in radians: ");
+                result = tangent(result);
+                displayResult("Tangent", result);
+                history.push_back("Tangent: tan(angle) = " + to_string(result));
+                break;
+            default:
+                cout << "Invalid choice. Please try again.\n";
+                break;
+        }
+    }
+    
+    // Display calculation history
+    cout << "\nCalculation History:\n";
+    for (const auto& entry : history) {
+        cout << entry << endl;
+    }
+    
+    return 0;
+}
